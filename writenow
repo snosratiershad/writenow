@@ -17,6 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 readonly VERSION="v0.0.1"
+readonly PROMPT="> "
 
 # Raise error on stderr
 # Arguments: error message
@@ -80,6 +81,15 @@ function check_dependency() {
   fi
 }
 
+# Prompt loop
+# Globals: PROMPT
+function prompt_loop() {
+  while true; do
+    read -r -p "${PROMPT}" line
+    echo "${line}"
+  done
+}
+
 # Main function
 function main() {
   # parse arguments
@@ -90,6 +100,8 @@ function main() {
   # Check dependencies
   # Busybox dependencies are not checked
   check_dependency "tput" # part of ncurses
+
+  prompt_loop
 }
 
 

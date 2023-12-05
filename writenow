@@ -16,8 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Global variables
 readonly VERSION="v0.0.1"
 readonly PROMPT="> "
+
+declare ROWS=()
 
 # Raise error on stderr
 # Arguments: error message
@@ -81,12 +84,30 @@ function check_dependency() {
   fi
 }
 
+# Write ROWS in an output file
+# Arguments: output file name
+# Globals: ROWS
+function write_rows() {
+  for row in "${ROWS[@]}"; do
+    echo "${row}" >> "$1"
+  done
+}
+
+# Handle termination signals
+function handle_termination() {
+  echo
+  read -r -p "File name to write: " file
+  write_rows "${file}"
+  exit 0
+}
+
 # Prompt loop
 # Globals: PROMPT
 function prompt_loop() {
+  local line
   while true; do
     read -r -p "${PROMPT}" line
-    echo "${line}"
+    ROWS+=("${line}")
   done
 }
 
@@ -100,6 +121,9 @@ function main() {
   # Check dependencies
   # Busybox dependencies are not checked
   check_dependency "tput" # part of ncurses
+
+  # handle termination signals
+  trap handle_termination SIGINT SIGTERM
 
   prompt_loop
 }

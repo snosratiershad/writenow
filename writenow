@@ -17,7 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.0.1"
+readonly VERSION="v0.1.0"
 readonly PROMPT="> "
 declare -r -i MAX_ROWS=3
 declare TEMINATED=false

@@ -19,8 +19,10 @@
 # Global variables
 readonly VERSION="v0.0.1"
 readonly PROMPT="> "
-
-declare ROWS=()
+declare -r -i MAX_ROWS=3
+declare TEMINATED=false
+declare -i ROWS=0
+declare LINES=()
 
 # Raise error on stderr
 # Arguments: error message
@@ -84,30 +86,52 @@ function check_dependency() {
   fi
 }
 
-# Write ROWS in an output file
+# Clear prompt lines
+
+# Write LINES in an output file
 # Arguments: output file name
-# Globals: ROWS
-function write_rows() {
-  for row in "${ROWS[@]}"; do
+# Globals: LINES
+function write_lines() {
+  for row in "${LINES[@]}"; do
     echo "${row}" >> "$1"
   done
 }
 
 # Handle termination signals
+# Globals: TEMINATED
 function handle_termination() {
-  echo
-  read -r -p "File name to write: " file
-  write_rows "${file}"
-  exit 0
+  if ! $TEMINATED; then
+    TEMINATED=true
+    echo
+    read -r -p "File name to write: " file
+    write_lines "${file}"
+    exit 0
+  else
+    echo
+    exit 0
+  fi
+}
+
+# Clear prompt lines if exceeds MAX_ROWS
+# Globals: ROWS, MAX_ROWS
+function reset_prompt_lines() {
+  if [[ ROWS -gt MAX_ROWS ]]; then
+    tput cuu "${ROWS}"
+    tput dl "$((ROWS - MAX_ROWS))"
+    ROWS=$MAX_ROWS
+    tput cud "${ROWS}"
+  fi
 }
 
 # Prompt loop
-# Globals: PROMPT
+# Globals: PROMPT, LINES, ROWS
 function prompt_loop() {
   local line
   while true; do
     read -r -p "${PROMPT}" line
-    ROWS+=("${line}")
+    ROWS+=1
+    LINES+=("${line}")
+    reset_prompt_lines
   done
 }
 

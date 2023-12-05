@@ -86,8 +86,6 @@ function check_dependency() {
   fi
 }
 
-# Clear prompt lines
-
 # Write LINES in an output file
 # Arguments: output file name
 # Globals: LINES

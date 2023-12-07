@@ -17,12 +17,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.1.0"
+readonly VERSION="v0.1.1"
 readonly PROMPT="> "
 declare -r -i MAX_ROWS=3
 declare TEMINATED=false
 declare -i ROWS=0
-declare LINES=()
+declare ROW_LINES=()
 
 # Raise error on stderr
 # Arguments: error message
@@ -86,11 +86,11 @@ function check_dependency() {
   fi
 }
 
-# Write LINES in an output file
+# Write ROW_LINES in an output file
 # Arguments: output file name
-# Globals: LINES
+# Globals: ROW_LINES
 function write_lines() {
-  for row in "${LINES[@]}"; do
+  for row in "${ROW_LINES[@]}"; do
     echo "${row}" >> "$1"
   done
 }
@@ -122,13 +122,12 @@ function reset_prompt_lines() {
 }
 
 # Prompt loop
-# Globals: PROMPT, LINES, ROWS
+# Globals: PROMPT, ROW_LINES, ROWS
 function prompt_loop() {
-  local line
   while true; do
     read -r -p "${PROMPT}" line
     ROWS+=1
-    LINES+=("${line}")
+    ROW_LINES+=("${line}")
     reset_prompt_lines
   done
 }

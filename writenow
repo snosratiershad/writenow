@@ -17,7 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.1.1"
+readonly VERSION="v0.1.2"
 readonly PROMPT="> "
 declare -r -i MAX_ROWS=3
 declare TEMINATED=false
@@ -124,6 +124,8 @@ function reset_prompt_lines() {
 # Prompt loop
 # Globals: PROMPT, ROW_LINES, ROWS
 function prompt_loop() {
+  # override IFS to read lines with whitespaces except newline
+  local IFS=$'\n'
   while true; do
     read -r -p "${PROMPT}" line
     ROWS+=1
@@ -146,6 +148,7 @@ function main() {
   # handle termination signals
   trap handle_termination SIGINT SIGTERM
 
+  # Run the prompt loop
   prompt_loop
 }
 

@@ -19,16 +19,31 @@
 # Global variables
 readonly VERSION="v0.1.2"
 readonly PROMPT="> "
+readonly ERROR_COLOR="1"
+readonly SECOND_COLOR="8"
+readonly THIRD_COLOR="0"
 declare -r -i MAX_ROWS=3
 declare TEMINATED=false
 declare -i ROWS=0
 declare ROW_LINES=()
 
+# Print a colored message
+# Arguments: message, color
+# Output: colored message on stdout
+function print_color() {
+  local color="$2"
+  if [[ -z "$color" ]]; then
+    color="15"
+  fi
+  echo -e "$(tput setaf "$color")$1$(tput sgr0)"
+}
+
 # Raise error on stderr
 # Arguments: error message
+# Globals: ERROR_COLOR
 # Output: error message on stderr
 function err() {
-  echo "Error: $*" >&2
+  print_color "Error: $*" "${ERROR_COLOR}" >&2
 }
 
 # Show version information

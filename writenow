@@ -21,7 +21,6 @@ readonly VERSION="v0.1.2"
 readonly PROMPT="> "
 readonly ERROR_COLOR="1"
 readonly SECOND_COLOR="8"
-readonly THIRD_COLOR="0"
 declare -r -i MAX_ROWS=3
 declare TEMINATED=false
 declare -i ROWS=0
@@ -125,15 +124,26 @@ function handle_termination() {
   fi
 }
 
-# Clear prompt lines if exceeds MAX_ROWS
-# Globals: ROWS, MAX_ROWS
+# Clear prompt lines if exceeds MAX_ROWS and set the foreground color
+# Globals: ROWS, ROW_LINES, MAX_ROWS, SECOND_COLOR
 function reset_prompt_lines() {
-  if [[ ROWS -gt MAX_ROWS ]]; then
+  if [ $ROWS -lt $MAX_ROWS ]; then
     tput cuu "${ROWS}"
-    tput dl "$((ROWS - MAX_ROWS))"
-    ROWS=$MAX_ROWS
-    tput cud "${ROWS}"
+    tput dl "${ROWS}"
+  else
+    tput cuu $(( MAX_ROWS + 1 ))
+    tput dl $(( MAX_ROWS + 1 ))
   fi
+
+  local start_index=$(( ROWS - MAX_ROWS ))
+  if [ $start_index -lt 0 ]; then
+    start_index=0
+  fi
+
+  for (( i=start_index; i<ROWS; i++ )); do
+    print_color "${ROW_LINES[$i]}" "${SECOND_COLOR}"
+  done
+
 }
 
 # Prompt loop
@@ -143,8 +153,8 @@ function prompt_loop() {
   local IFS=$'\n'
   while true; do
     read -r -p "${PROMPT}" line
-    ROWS+=1
     ROW_LINES+=("${line}")
+    ROWS=${#ROW_LINES[@]}
     reset_prompt_lines
   done
 }

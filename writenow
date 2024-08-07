@@ -17,7 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.1.2"
+readonly VERSION="v0.1.3"
 readonly PROMPT="> "
 readonly ERROR_COLOR="1"
 readonly SECOND_COLOR="8"
@@ -127,7 +127,7 @@ function handle_termination() {
 # Clear prompt lines if exceeds MAX_ROWS and set the foreground color
 # Globals: ROWS, ROW_LINES, MAX_ROWS, SECOND_COLOR
 function reset_prompt_lines() {
-  if [ $ROWS -lt $MAX_ROWS ]; then
+  if [ $ROWS -le $MAX_ROWS ]; then
     tput cuu "${ROWS}"
     tput dl "${ROWS}"
   else

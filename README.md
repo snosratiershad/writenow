@@ -1,6 +1,8 @@
 # writenow
 An edit-free writing experiment for command-line, written in bash 
 
+![Demo](assets/demo.gif)
+
 ## Idea
 The original idea comes from [Ensō](https://enso.sonnet.io/):
   > Write now, edit later.

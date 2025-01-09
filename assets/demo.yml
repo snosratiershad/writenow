@@ -1,0 +1,361 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/salar/w/writenow
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 100
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 22
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 170
+    content: "\e[?2004h$ "
+  - delay: 1170
+    content: .
+  - delay: 72
+    content: /
+  - delay: 136
+    content: w
+  - delay: 120
+    content: 'ritenow '
+  - delay: 592
+    content: "\r\n\e[?2004l\r> "
+  - delay: 519
+    content: Q
+  - delay: 136
+    content: u
+  - delay: 192
+    content: i
+  - delay: 80
+    content: c
+  - delay: 136
+    content: k
+  - delay: 87
+    content: ' '
+  - delay: 152
+    content: b
+  - delay: 96
+    content: r
+  - delay: 81
+    content: o
+  - delay: 136
+    content: w
+  - delay: 88
+    content: 'n'
+  - delay: 79
+    content: ' '
+  - delay: 257
+    content: f
+  - delay: 95
+    content: o
+  - delay: 113
+    content: x
+  - delay: 480
+    content: "\r\n\e[1A\e[1M\e[90mQuick brown fox\e(B\e[m\r\n> "
+  - delay: 725
+    content: j
+  - delay: 136
+    content: u
+  - delay: 192
+    content: m
+  - delay: 184
+    content: p
+  - delay: 176
+    content: e
+  - delay: 168
+    content: d
+  - delay: 64
+    content: ' '
+  - delay: 216
+    content: o
+  - delay: 128
+    content: v
+  - delay: 224
+    content: e
+  - delay: 151
+    content: r
+  - delay: 81
+    content: ' '
+  - delay: 144
+    content: t
+  - delay: 80
+    content: h
+  - delay: 95
+    content: e
+  - delay: 88
+    content: ' '
+  - delay: 257
+    content: l
+  - delay: 95
+    content: a
+  - delay: 201
+    content: z
+  - delay: 119
+    content: 'y'
+  - delay: 112
+    content: ' '
+  - delay: 433
+    content: d
+  - delay: 160
+    content: o
+  - delay: 151
+    content: g
+  - delay: 289
+    content: "\r\n\e[2A\e[2M\e[90mQuick brown fox\e(B\e[m\r\n\e[90mjumped over the lazy dog\e(B\e[m\r\n> "
+  - delay: 460
+    content: H
+  - delay: 231
+    content: e
+  - delay: 56
+    content: l
+  - delay: 385
+    content: l
+  - delay: 167
+    content: o
+  - delay: 113
+    content: ' '
+  - delay: 208
+    content: W
+  - delay: 136
+    content: o
+  - delay: 111
+    content: r
+  - delay: 96
+    content: l
+  - delay: 120
+    content: d
+  - delay: 448
+    content: '!'
+  - delay: 440
+    content: "\r\n\e[3A\e[3M\e[90mQuick brown fox\e(B\e[m\r\n\e[90mjumped over the lazy dog\e(B\e[m\r\n\e[90mHello World!\e(B\e[m\r\n> "
+  - delay: 618
+    content: A
+  - delay: 217
+    content: ' '
+  - delay: 120
+    content: l
+  - delay: 95
+    content: i
+  - delay: 73
+    content: 'n'
+  - delay: 63
+    content: e
+  - delay: 240
+    content: "\r\n\e[4A\e[4M\e[90mjumped over the lazy dog\e(B\e[m\r\n\e[90mHello World!\e(B\e[m\r\n\e[90mA line\e(B\e[m\r\n> "
+  - delay: 523
+    content: A
+  - delay: 151
+    content: 'n'
+  - delay: 80
+    content: o
+  - delay: 144
+    content: t
+  - delay: 96
+    content: h
+  - delay: 88
+    content: e
+  - delay: 145
+    content: r
+  - delay: 87
+    content: ' '
+  - delay: 88
+    content: l
+  - delay: 48
+    content: i
+  - delay: 104
+    content: 'n'
+  - delay: 80
+    content: e
+  - delay: 184
+    content: "\r\n\e[4A\e[4M\e[90mHello World!\e(B\e[m\r\n\e[90mA line\e(B\e[m\r\n\e[90mAnother line\e(B\e[m\r\n> "
+  - delay: 346
+    content: 'Y'
+  - delay: 232
+    content: e
+  - delay: 217
+    content: t
+  - delay: 127
+    content: ' '
+  - delay: 272
+    content: A
+  - delay: 208
+    content: 'n'
+  - delay: 56
+    content: o
+  - delay: 176
+    content: t
+  - delay: 103
+    content: h
+  - delay: 144
+    content: e
+  - delay: 144
+    content: r
+  - delay: 112
+    content: ' '
+  - delay: 336
+    content: L
+  - delay: 168
+    content: i
+  - delay: 96
+    content: 'n'
+  - delay: 56
+    content: e
+  - delay: 336
+    content: "\r\n\e[4A\e[4M\e[90mA line\e(B\e[m\r\n\e[90mAnother line\e(B\e[m\r\n\e[90mYet Another Line\e(B\e[m\r\n> "
+  - delay: 922
+    content: "^C\r\nFile name to write: "
+  - delay: 1080
+    content: .
+  - delay: 256
+    content: /
+  - delay: 288
+    content: o
+  - delay: 112
+    content: u
+  - delay: 152
+    content: t
+  - delay: 128
+    content: p
+  - delay: 136
+    content: u
+  - delay: 112
+    content: t
+  - delay: 361
+    content: "\r\n\e[?2004h$ "
+  - delay: 424
+    content: c
+  - delay: 143
+    content: a
+  - delay: 184
+    content: t
+  - delay: 88
+    content: ' '
+  - delay: 144
+    content: .
+  - delay: 80
+    content: /
+  - delay: 264
+    content: o
+  - delay: 72
+    content: u
+  - delay: 146
+    content: 'tput '
+  - delay: 702
+    content: "\r\n\e[?2004l\rQuick brown fox\r\njumped over the lazy dog\r\nHello World!\r\nA line\r\nAnother line\r\nYet Another Line\r\n\e[?2004h$ "
+  - delay: 416
+    content: l
+  - delay: 160
+    content: o
+  - delay: 72
+    content: g
+  - delay: 216
+    content: o
+  - delay: 48
+    content: u
+  - delay: 72
+    content: t
+  - delay: 368
+    content: "\r\n\e[?2004l\r"

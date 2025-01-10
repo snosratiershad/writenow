@@ -22,7 +22,6 @@ readonly PROMPT="> "
 readonly ERROR_COLOR="1"
 readonly SECOND_COLOR="8"
 declare -r -i MAX_ROWS=3
-declare TEMINATED=false
 declare -i ROWS=0
 declare ROW_LINES=()
 
@@ -63,8 +62,12 @@ function usage() {
   echo
   echo "Usage: writenow [OPTION]..."
   echo
+  echo "  Upon exit, writenow will create a file at ~/prose/\$(date +%Y-%m-%d).txt"
+  echo "  if it does not already exist, and then append the lines you've written."
+  echo
   echo "  -h, --help      display this help and exit"
   echo "  -v, --version   display version information and exit"
+  echo
 }
 
 # Parse arguments
@@ -110,18 +113,13 @@ function write_lines() {
 }
 
 # Handle termination signals
-# Globals: TEMINATED
 function handle_termination() {
-  if ! $TEMINATED; then
-    TEMINATED=true
-    echo
-    read -r -p "File name to write: " file
-    write_lines "${file}"
-    exit 0
-  else
-    echo
-    exit 0
-  fi
+  mkdir -p "$HOME/prose"
+  local OUTPATH="$HOME/prose/$(date +%Y-%m-%d).txt"
+  write_lines "${OUTPATH}"
+  echo
+  echo "added ${#ROW_LINES[@]} lines to ${OUTPATH}" >&2
+  exit 0
 }
 
 # Clear prompt lines if exceeds MAX_ROWS and set the foreground color

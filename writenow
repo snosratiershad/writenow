@@ -3,6 +3,7 @@
 # writenow - A simple bash script to write in edit-free mode
 #
 # Copyright (C) 2023  Salar Nosrati-Ershad
+# Copyright (C) 2025  Justin Wong
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,14 +18,15 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.1.3"
+readonly VERSION="v0.2.0"
 readonly PROMPT="> "
 readonly ERROR_COLOR="1"
 readonly SECOND_COLOR="8"
 declare -r -i MAX_ROWS=3
-declare TEMINATED=false
 declare -i ROWS=0
 declare ROW_LINES=()
+declare TERMINATED=false
+declare OUTPATH=""
 
 # Print a colored message
 # Arguments: message, color
@@ -50,7 +52,9 @@ function err() {
 # Output: version information on stdout
 function version() {
   echo "writenow ${VERSION}"
+  echo
   echo "Copyright (C)  2023 Salar Nosrati-Ershad"
+  echo "Copyright (C)  2025 Justin Wong"
   echo "License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>"
   echo "This is free software: you are free to change and redistribute it."
   echo "There is NO WARRANTY, to the extent permitted by law."
@@ -63,16 +67,32 @@ function usage() {
   echo
   echo "Usage: writenow [OPTION]..."
   echo
-  echo "  -h, --help      display this help and exit"
-  echo "  -v, --version   display version information and exit"
+  echo "Examples:"
+  echo "  writenow"
+  echo "  writenow -o note.txt"
+  echo "  writenow -o ~/notes/\$(date +%Y-%m-%d).txt"
+  echo
+  echo "Options:"
+  echo "  -o <path>       Filepath where lines will be appended."
+  echo "                  If omitted, a filepath prompt appears upon exit."
+  echo "                  If you Ctrl+C the prompt, then nothing will be saved."
+  echo "  -h, --help      Display this help and exit"
+  echo "  -v, --version   Display version information and exit"
+  echo
 }
 
 # Parse arguments
 # Arguments: first arguments
 # Output: error message on stderr and exit if arguments are invalid
 # Return: 0 if arguments are valid, 1 otherwise
+# Globals: OUTPATH
 function parse_args() {
   case "$1" in
+    -o)
+      OUTPATH="$2"
+      # TODO: touch outpath, and quit with err early if cannot write to that path,
+      # like in the case of missing permissions or directory not existing
+      ;;
     -h|--help)
       usage
       exit 0
@@ -109,19 +129,23 @@ function write_lines() {
   done
 }
 
-# Handle termination signals
-# Globals: TEMINATED
+# Handle termination signals and write output
+# Globals: OUTPATH, TERMINATED
 function handle_termination() {
-  if ! $TEMINATED; then
-    TEMINATED=true
-    echo
-    read -r -p "File name to write: " file
-    write_lines "${file}"
-    exit 0
-  else
+  if $TERMINATED; then
     echo
     exit 0
   fi
+
+  TERMINATED=true
+  if [[ -z "$OUTPATH" ]]; then
+    echo
+    read -r -p "File name to write: " OUTPATH
+  fi
+  write_lines "${OUTPATH}"
+  echo
+  echo "added ${#ROW_LINES[@]} lines to ${OUTPATH}" >&2
+  exit 0
 }
 
 # Clear prompt lines if exceeds MAX_ROWS and set the foreground color
@@ -163,7 +187,8 @@ function prompt_loop() {
 function main() {
   # parse arguments
   if [[ $# -gt 0 ]]; then
-    parse_args "$1"
+    # pass all args to parse_args func
+    parse_args "$@"
   fi
 
   # Check dependencies

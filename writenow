@@ -68,14 +68,16 @@ function usage() {
   echo "Usage: writenow [OPTION]..."
   echo
   echo "Examples:"
+  echo "  writenow"
   echo "  writenow -o note.txt"
   echo "  writenow -o ~/notes/\$(date +%Y-%m-%d).txt"
   echo
   echo "Options:"
-  echo "  -o <path>       filepath where lines will be appended."
+  echo "  -o <path>       Filepath where lines will be appended."
   echo "                  If omitted, a filepath prompt appears upon exit."
-  echo "  -h, --help      display this help and exit"
-  echo "  -v, --version   display version information and exit"
+  echo "                  If you Ctrl+C the prompt, then nothing will be saved."
+  echo "  -h, --help      Display this help and exit"
+  echo "  -v, --version   Display version information and exit"
   echo
 }
 

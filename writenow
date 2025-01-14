@@ -2,7 +2,7 @@
 #
 # writenow - A simple bash script to write in edit-free mode
 #
-# Copyright (C) 2023  Salar Nosrati-Ershad
+# Copyright (C) 2023-2025  Salar Nosrati-Ershad
 # Copyright (C) 2025  Justin Wong
 #
 # This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ function err() {
 function version() {
   echo "writenow ${VERSION}"
   echo
-  echo "Copyright (C)  2023 Salar Nosrati-Ershad"
+  echo "Copyright (C)  2023-2025 Salar Nosrati-Ershad"
   echo "Copyright (C)  2025 Justin Wong"
   echo "License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>"
   echo "This is free software: you are free to change and redistribute it."
@@ -73,12 +73,11 @@ function usage() {
   echo "  writenow -o ~/notes/\$(date +%Y-%m-%d).txt"
   echo
   echo "Options:"
-  echo "  -o <path>       Filepath where lines will be appended."
-  echo "                  If omitted, a filepath prompt appears upon exit."
+  echo "  -o <file>       File path where lines will be appended."
+  echo "                  If omitted, a file path prompt appears upon exit."
   echo "                  If you Ctrl+C the prompt, then nothing will be saved."
   echo "  -h, --help      Display this help and exit"
   echo "  -v, --version   Display version information and exit"
-  echo
 }
 
 # Parse arguments
@@ -143,7 +142,6 @@ function handle_termination() {
     read -r -p "File name to write: " OUTPATH
   fi
   write_lines "${OUTPATH}"
-  echo
   echo "added ${#ROW_LINES[@]} lines to ${OUTPATH}" >&2
   exit 0
 }

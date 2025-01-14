@@ -3,7 +3,7 @@
 # writenow - A simple bash script to write in edit-free mode
 #
 # Copyright (C) 2023  Salar Nosrati-Ershad
-# Modified in 2025 by Justin Wong
+# Copyright (C) 2025  Justin Wong
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,12 +51,12 @@ function err() {
 # Output: version information on stdout
 function version() {
   echo "writenow ${VERSION}"
-#  echo
-#  echo "Copyright (C)  2023 Salar Nosrati-Ershad"
-#  echo "Modified in 2025 by Justin Wong"
-#  echo "License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>"
-#  echo "This is free software: you are free to change and redistribute it."
-#  echo "There is NO WARRANTY, to the extent permitted by law."
+  echo
+  echo "Copyright (C)  2023 Salar Nosrati-Ershad"
+  echo "Copyright (C)  2025 Justin Wong"
+  echo "License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>"
+  echo "This is free software: you are free to change and redistribute it."
+  echo "There is NO WARRANTY, to the extent permitted by law."
 }
 
 # Show usage information

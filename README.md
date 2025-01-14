@@ -20,3 +20,8 @@ Execute writenow:
 ```
 Write anything you want and when you're done, press Ctrl+c and type file address you want to write into it.
 If you don't want to write into any file, press Ctrl+c again for exit.
+Or you can specify the output file
+```
+./writenow note.txt
+```
+and output will be appended to the note.txt in this case.

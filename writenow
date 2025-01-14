@@ -125,8 +125,6 @@ function write_lines() {
   for row in "${ROW_LINES[@]}"; do
     echo "${row}" >> "$1"
   done
-  # nice to have newline separating this entry and the next
-  echo "" >> "$1"
 }
 
 # Handle termination signals and write output

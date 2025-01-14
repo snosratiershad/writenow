@@ -25,6 +25,7 @@ readonly SECOND_COLOR="8"
 declare -r -i MAX_ROWS=3
 declare -i ROWS=0
 declare ROW_LINES=()
+declare OUTPATH=""
 
 # Print a colored message
 # Arguments: message, color
@@ -65,9 +66,10 @@ function usage() {
   echo
   echo "Usage: writenow [OPTION]..."
   echo
-  echo "  Upon exit, writenow will create a file at ~/prose/\$(date +%Y-%m-%d).txt"
-  echo "  if it does not already exist, and then append the lines you've written."
+  echo "Example: writenow -o ~/notes/\$(date +%Y-%m-%d).txt"
   echo
+  echo "  -o <path>       filepath where lines will be appended."
+  echo "                  If omitted, a filepath prompt appears upon exit."
   echo "  -h, --help      display this help and exit"
   echo "  -v, --version   display version information and exit"
   echo
@@ -77,8 +79,14 @@ function usage() {
 # Arguments: first arguments
 # Output: error message on stderr and exit if arguments are invalid
 # Return: 0 if arguments are valid, 1 otherwise
+# Globals: OUTPATH
 function parse_args() {
   case "$1" in
+    -o)
+      OUTPATH="$2"
+      # TODO: touch outpath, and quit with err early if cannot write to that path,
+      # like in the case of missing permissions or directory not existing
+      ;;
     -h|--help)
       usage
       exit 0
@@ -118,9 +126,11 @@ function write_lines() {
 }
 
 # Handle termination signals
+# Globals: OUTPATH
 function handle_termination() {
-  mkdir -p "$HOME/prose"
-  local OUTPATH="$HOME/prose/$(date +%Y-%m-%d).txt"
+  if [[ -z "$OUTPATH" ]]; then
+    read -r -p "File name to write: " OUTPATH
+  fi
   write_lines "${OUTPATH}"
   echo
   echo "added ${#ROW_LINES[@]} lines to ${OUTPATH}" >&2
@@ -166,7 +176,8 @@ function prompt_loop() {
 function main() {
   # parse arguments
   if [[ $# -gt 0 ]]; then
-    parse_args "$1"
+    # pass all args to parse_args func
+    parse_args "$@"
   fi
 
   # Check dependencies

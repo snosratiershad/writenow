@@ -25,6 +25,7 @@ readonly SECOND_COLOR="8"
 declare -r -i MAX_ROWS=3
 declare -i ROWS=0
 declare ROW_LINES=()
+declare TERMINATED=false
 declare OUTPATH=""
 
 # Print a colored message
@@ -125,10 +126,17 @@ function write_lines() {
   echo "" >> "$1"
 }
 
-# Handle termination signals
-# Globals: OUTPATH
+# Handle termination signals and write output
+# Globals: OUTPATH, TERMINATED
 function handle_termination() {
+  if $TERMINATED; then
+    echo
+    exit 0
+  fi
+
+  TERMINATED=true
   if [[ -z "$OUTPATH" ]]; then
+    echo
     read -r -p "File name to write: " OUTPATH
   fi
   write_lines "${OUTPATH}"

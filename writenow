@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.2.0"
+readonly VERSION="v0.2.1"
 readonly PROMPT="> "
 readonly ERROR_COLOR="1"
 readonly SECOND_COLOR="8"

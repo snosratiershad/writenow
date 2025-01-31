@@ -8,12 +8,12 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
@@ -80,6 +80,21 @@ function usage() {
   echo "  -v, --version   Display version information and exit"
 }
 
+# Validate output file path
+# Arguments: output file path
+# Output: error message on stderr and exit if path is invalid
+# Return: 0 if path is valid, 1 otherwise
+function validate_outpath() {
+  if [[ -z "$1" ]]; then
+    err "Output file path is missing."
+    exit 1
+  fi
+  if ! touch "$1" 2>/dev/null; then
+    err "Cannot write to the specified path: $1"
+    exit 1
+  fi
+}
+
 # Parse arguments
 # Arguments: first arguments
 # Output: error message on stderr and exit if arguments are invalid
@@ -89,8 +104,7 @@ function parse_args() {
   case "$1" in
     -o)
       OUTPATH="$2"
-      # TODO: touch outpath, and quit with err early if cannot write to that path,
-      # like in the case of missing permissions or directory not existing
+      validate_outpath "${OUTPATH}"
       ;;
     -h|--help)
       usage

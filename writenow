@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Global variables
-readonly VERSION="v0.2.1"
+readonly VERSION="v1.0.0"
 readonly PROMPT="> "
 readonly ERROR_COLOR="1"
 readonly SECOND_COLOR="8"
@@ -160,38 +160,73 @@ function handle_termination() {
   exit 0
 }
 
-# Clear prompt lines if exceeds MAX_ROWS and set the foreground color
-# Globals: ROWS, ROW_LINES, MAX_ROWS, SECOND_COLOR
-function reset_prompt_lines() {
-  if [ $ROWS -le $MAX_ROWS ]; then
-    tput cuu "${ROWS}"
-    tput dl "${ROWS}"
-  else
-    tput cuu $(( MAX_ROWS + 1 ))
-    tput dl $(( MAX_ROWS + 1 ))
-  fi
-
-  local start_index=$(( ROWS - MAX_ROWS ))
-  if [ $start_index -lt 0 ]; then
-    start_index=0
-  fi
-
-  for (( i=start_index; i<ROWS; i++ )); do
-    print_color "${ROW_LINES[$i]}" "${SECOND_COLOR}"
-  done
-
-}
 
 # Prompt loop
 # Globals: PROMPT, ROW_LINES, ROWS
 function prompt_loop() {
   # override IFS to read lines with whitespaces except newline
   local IFS=$'\n'
+  local current_line=""
   while true; do
-    read -r -p "${PROMPT}" line
-    ROW_LINES+=("${line}")
-    ROWS=${#ROW_LINES[@]}
-    reset_prompt_lines
+    read -r -n 1 -p "${PROMPT}${current_line}" char
+    if [[ $char == $'\x7f' || $char == $'\x08' ]]; then
+      if [[ $current_line == "" ]]; then
+        if [ ${#ROW_LINES[@]} -eq 0 ]; then
+          tput cr
+          tput el
+          continue
+        else
+          current_line="${ROW_LINES[-1]}"
+          unset 'ROW_LINES[-1]'
+          tput cr
+          tput el
+          if [ $ROWS -le $MAX_ROWS ]; then
+            tput cuu "${ROWS}"
+            tput dl "${ROWS}"
+          else
+            tput cuu $(( MAX_ROWS ))
+            tput dl $(( MAX_ROWS + 1 ))
+          fi
+          ROWS+=-1
+          local start_index=$(( ROWS - MAX_ROWS ))
+          if [ $start_index -lt 0 ]; then
+            start_index=0
+          fi
+
+          for (( i=start_index; i<ROWS; i++ )); do
+            print_color "${ROW_LINES[$i]}" "${SECOND_COLOR}"
+          done
+        fi
+      else
+        tput cr
+        tput el
+        current_line="${current_line::-1}"
+      fi
+    elif [[ $char == "" ]]; then
+      ROW_LINES+=("${current_line}")
+      ROWS+=1
+      if [ $ROWS -le $MAX_ROWS ]; then
+        tput cuu "${ROWS}"
+        tput dl "${ROWS}"
+      else
+        tput cuu $(( MAX_ROWS + 1 ))
+        tput dl $(( MAX_ROWS + 1 ))
+      fi
+
+      local start_index=$(( ROWS - MAX_ROWS ))
+      if [ $start_index -lt 0 ]; then
+        start_index=0
+      fi
+
+      for (( i=start_index; i<ROWS; i++ )); do
+        print_color "${ROW_LINES[$i]}" "${SECOND_COLOR}"
+      done
+      current_line=""
+    else
+      tput cr
+      tput el
+      current_line+=$char
+    fi
   done
 }
 

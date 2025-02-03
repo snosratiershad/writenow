@@ -137,6 +137,11 @@ function check_dependency() {
 # Arguments: output file name
 # Globals: ROW_LINES
 function write_lines() {
+  if ! touch "$1" 2>/dev/null; then
+    err "Cannot write to the specified path: $1"
+    exit 1
+  fi
+
   for row in "${ROW_LINES[@]}"; do
     echo "${row}" >> "$1"
   done
@@ -153,7 +158,7 @@ function handle_termination() {
   TERMINATED=true
   if [[ -z "$OUTPATH" ]]; then
     echo
-    read -r -p "File name to write: " OUTPATH
+    read -r -p "File path to write: " OUTPATH
   fi
   write_lines "${OUTPATH}"
   echo "added ${#ROW_LINES[@]} lines to ${OUTPATH}" >&2

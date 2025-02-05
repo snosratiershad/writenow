@@ -1,4 +1,4 @@
 check:
-	shellcheck ./writenow
+	shellcheck -S style -o all ./writenow
 
 .PHONY: check

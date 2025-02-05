@@ -33,10 +33,10 @@ declare OUTPATH=""
 # Output: colored message on stdout
 function print_color() {
   local color="$2"
-  if [[ -z "$color" ]]; then
+  if [[ -z "${color}" ]]; then
     color="15"
   fi
-  echo -e "$(tput setaf "$color")$1$(tput sgr0)"
+  echo -e "$(tput setaf "${color}" || true)$1$(tput sgr0 || true)"
 }
 
 # Raise error on stderr
@@ -150,13 +150,13 @@ function write_lines() {
 # Handle termination signals and write output
 # Globals: OUTPATH, TERMINATED
 function handle_termination() {
-  if $TERMINATED; then
+  if ${TERMINATED}; then
     echo
     exit 0
   fi
 
   TERMINATED=true
-  if [[ -z "$OUTPATH" ]]; then
+  if [[ -z "${OUTPATH}" ]]; then
     echo
     read -r -p "File path to write: " OUTPATH
   fi
@@ -174,9 +174,9 @@ function prompt_loop() {
   local current_line=""
   while true; do
     read -r -n 1 -p "${PROMPT}${current_line}" char
-    if [[ $char == $'\x7f' || $char == $'\x08' ]]; then
-      if [[ $current_line == "" ]]; then
-        if [ ${#ROW_LINES[@]} -eq 0 ]; then
+    if [[ "${char}" == $'\x7f' || "${char}" == $'\x08' ]]; then
+      if [[ "${current_line}" == "" ]]; then
+        if [[ ${#ROW_LINES[@]} -eq 0 ]]; then
           tput cr
           tput el
           continue
@@ -185,7 +185,7 @@ function prompt_loop() {
           unset 'ROW_LINES[-1]'
           tput cr
           tput el
-          if [ $ROWS -le $MAX_ROWS ]; then
+          if [[ ${ROWS} -le ${MAX_ROWS} ]]; then
             tput cuu "${ROWS}"
             tput dl "${ROWS}"
           else
@@ -194,12 +194,12 @@ function prompt_loop() {
           fi
           ROWS+=-1
           local start_index=$(( ROWS - MAX_ROWS ))
-          if [ $start_index -lt 0 ]; then
+          if [[ ${start_index} -lt 0 ]]; then
             start_index=0
           fi
 
           for (( i=start_index; i<ROWS; i++ )); do
-            print_color "${ROW_LINES[$i]}" "${SECOND_COLOR}"
+            print_color "${ROW_LINES[${i}]}" "${SECOND_COLOR}"
           done
         fi
       else
@@ -207,10 +207,10 @@ function prompt_loop() {
         tput el
         current_line="${current_line::-1}"
       fi
-    elif [[ $char == "" ]]; then
+    elif [[ "${char}" == "" ]]; then
       ROW_LINES+=("${current_line}")
       ROWS+=1
-      if [ $ROWS -le $MAX_ROWS ]; then
+      if [[ ${ROWS} -le ${MAX_ROWS} ]]; then
         tput cuu "${ROWS}"
         tput dl "${ROWS}"
       else
@@ -219,18 +219,18 @@ function prompt_loop() {
       fi
 
       local start_index=$(( ROWS - MAX_ROWS ))
-      if [ $start_index -lt 0 ]; then
+      if [[ ${start_index} -lt 0 ]]; then
         start_index=0
       fi
 
       for (( i=start_index; i<ROWS; i++ )); do
-        print_color "${ROW_LINES[$i]}" "${SECOND_COLOR}"
+        print_color "${ROW_LINES[${i}]}" "${SECOND_COLOR}"
       done
       current_line=""
     else
       tput cr
       tput el
-      current_line+=$char
+      current_line+="${char}"
     fi
   done
 }
